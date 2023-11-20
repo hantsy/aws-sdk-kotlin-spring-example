@@ -11,6 +11,7 @@ import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProviderChain
 import aws.smithy.kotlin.runtime.client.LogMode
 import aws.smithy.kotlin.runtime.client.endpoints.Endpoint
+import aws.smithy.kotlin.runtime.net.Url
 import com.example.demo.internal.AwsProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,12 +40,12 @@ class AwsConfig() {
         return S3Client {
             credentialsProvider = awsCredentialsProvider
             region = properties.region
-            endpointProvider = properties.endpoint?.let { url ->
-                S3EndpointProvider { Endpoint(url) }
-            } ?: DefaultS3EndpointProvider()
+//            endpointProvider = properties.endpoint?.let { url ->
+//                S3EndpointProvider { Endpoint(url) }
+//            } ?: DefaultS3EndpointProvider()
+            endpointUrl= properties.endpoint?.let { Url.parse(it) }
             forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
-
         }
     }
 }
