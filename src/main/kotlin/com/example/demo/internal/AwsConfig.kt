@@ -41,7 +41,7 @@ class AwsConfig() {
             endpointProvider = properties.endpoint?.let { url ->
                 S3EndpointProvider { Endpoint(url) }
             } ?: DefaultS3EndpointProvider()
-
+            forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
 
         }
