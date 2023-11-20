@@ -33,6 +33,7 @@ class AwsConfig() {
         return CachedCredentialsProvider(chain)
     }
 
+    //see: https://github.com/awslabs/aws-sdk-kotlin/issues/842
     @Bean
     fun awsS3Client(awsCredentialsProvider: CredentialsProvider, properties: AwsProperties): S3Client {
         return S3Client {
