@@ -1,0 +1,81 @@
+package com.example.demo
+
+import com.example.demo.StorageServiceTest.StorageServiceTestConfig
+import com.example.demo.internal.AwsProperties
+import io.etip.backend.infrastructure.aws.AwsConfig
+import io.etip.backend.infrastructure.aws.S3StorageService
+import io.kotest.assertions.nondeterministic.continually
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
+import org.springframework.core.io.ClassPathResource
+import org.springframework.util.FileCopyUtils
+import java.nio.file.Files
+import java.util.*
+import kotlin.time.Duration.Companion.milliseconds
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@SpringBootTest(
+    classes = [StorageServiceTestConfig::class],
+    properties = ["aws.endpoint=http://s3.localhost.localstack.cloud:4566"]
+)
+class StorageServiceTest @Autowired constructor(val storageService: StorageService) {
+
+    @Configuration
+    @Import(S3StorageService::class, AwsConfig::class)
+    @EnableConfigurationProperties(AwsProperties::class)
+    class StorageServiceTestConfig
+
+    @Test
+    fun `store text files`() = runTest {
+        val id = UUID.randomUUID().toString()
+        val content = "Hello World".toByteArray().toFluxDataBuffer()
+
+        storageService.store(id, content)
+
+        continually(1000.milliseconds) {
+            val result = storageService.retrieve(id)
+            result shouldNotBe null
+            String(result!!.toByteArray()) shouldBe "Hello World"
+        }
+
+        storageService.delete(id)
+
+        continually(1000.milliseconds) {
+            try {
+                storageService.retrieve(id)
+            } catch (e: Exception) {
+                e.message shouldBe "Failed to retrieve object $id"
+            }
+        }
+    }
+
+    @Test
+    fun `store binary files`() = runTest {
+        val id = UUID.randomUUID().toString()
+        val content = withContext(Dispatchers.IO) {
+            ClassPathResource("/test.png").contentAsByteArray.toFluxDataBuffer()
+        }
+        storageService.store(id, content)
+
+        continually(1000.milliseconds) {
+            val result = storageService.retrieve(id)
+            result shouldNotBe null
+            val outputFile = withContext(Dispatchers.IO) {
+                Files.createTempFile("test", ".png")
+            }.toFile()
+            FileCopyUtils.copy(result!!.toByteArray(), outputFile)
+
+            outputFile.exists() shouldBe true
+        }
+    }
+}
