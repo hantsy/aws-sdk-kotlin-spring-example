@@ -23,7 +23,6 @@ import java.nio.file.Files
 import java.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @SpringBootTest(
     classes = [StorageServiceTestConfig::class],
     properties = ["aws.endpoint=http://s3.localhost.localstack.cloud:4566"]
