@@ -1,18 +1,14 @@
-package io.etip.backend.infrastructure.aws
+package com.example.demo.internal
 
 import aws.sdk.kotlin.runtime.auth.credentials.EnvironmentCredentialsProvider
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.endpoints.DefaultS3EndpointProvider
-import aws.sdk.kotlin.services.s3.endpoints.S3EndpointProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.CachedCredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProviderChain
 import aws.smithy.kotlin.runtime.client.LogMode
-import aws.smithy.kotlin.runtime.client.endpoints.Endpoint
 import aws.smithy.kotlin.runtime.net.Url
-import com.example.demo.internal.AwsProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
