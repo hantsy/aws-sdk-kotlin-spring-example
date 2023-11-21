@@ -58,8 +58,8 @@ class AwsConfig() {
 //                SecretsManagerEndpointProvider { Endpoint(url) }
 //            } ?: DefaultSecretsManagerEndpointProvider()
             endpointUrl = properties.endpoint?.let { Url.parse(it) }
-            // there is forcePathStyle
-            //forcePathStyle = !properties.endpoint.isNullOrBlank()
+            // there is no forcePathStyle for SecretsManagerClient
+            // forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
     }
