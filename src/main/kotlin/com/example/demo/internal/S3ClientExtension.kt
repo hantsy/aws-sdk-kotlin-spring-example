@@ -1,22 +1,27 @@
 package com.example.demo.internal
 
 import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.model.CreateBucketRequest
-import aws.sdk.kotlin.services.s3.model.DeleteObjectRequest
-import aws.sdk.kotlin.services.s3.model.GetObjectRequest
-import aws.sdk.kotlin.services.s3.model.HeadBucketRequest
-import aws.sdk.kotlin.services.s3.model.PutObjectRequest
+import aws.sdk.kotlin.services.s3.model.*
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
-import com.example.demo.toByteArray
-import com.example.demo.toFluxDataBuffer
+import aws.smithy.kotlin.runtime.content.toByteStream
+import aws.smithy.kotlin.runtime.content.toFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactor.asFlux
 import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.core.io.buffer.DataBufferUtils
+import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
 import reactor.core.publisher.Flux
 
 class S3ClientException(message: String) : RuntimeException(message)
 
+private val s3ClientScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 suspend fun S3Client.delete(bucketName: String, resourceKey: String) {
     val request = DeleteObjectRequest {
         bucket = bucketName
@@ -72,7 +77,30 @@ suspend fun S3Client.store(bucketName: String, resourceKey: String, data: ByteAr
 }
 
 suspend fun S3Client.store(bucketName: String, resourceKey: String, data: Flux<DataBuffer>) {
-    this.store(bucketName, resourceKey, data.toByteArray())
+    this.createBucketIfNotExists(bucketName)
+    val mediaType = MediaTypeFactory.getMediaType(resourceKey)
+        .orElseGet { MediaType.APPLICATION_OCTET_STREAM }
+
+    val bodyData = data.asFlow()
+        .map { dataBuffer ->
+            val bytes = ByteArray(dataBuffer.readableByteCount())
+            dataBuffer.read(bytes)
+            DataBufferUtils.release(dataBuffer)
+            bytes
+        }
+
+    val request = PutObjectRequest {
+        bucket = bucketName
+        body = bodyData.toByteStream(s3ClientScope)
+        key = resourceKey
+        contentType = mediaType.toString()
+    }
+    val result = try {
+        this.putObject(request)
+    } catch (e: Exception) {
+        throw S3ClientException(e.message ?: "Failed to store object $resourceKey")
+    }
+    println("store object to $bucketName: ${result.eTag}")
 }
 
 suspend fun S3Client.retrieve(bucketName: String, resourceKey: String): ByteArray? {
@@ -94,7 +122,21 @@ suspend fun S3Client.retrieve(bucketName: String, resourceKey: String): ByteArra
 }
 
 suspend fun S3Client.retrieveAsFluxDataBuffer(bucketName: String, resourceKey: String): Flux<DataBuffer> {
-    return this.retrieve(bucketName, resourceKey)?.let {
-        return it.toFluxDataBuffer()
-    } ?: Flux.empty()
+    val request = GetObjectRequest {
+        bucket = bucketName
+        key = resourceKey
+    }
+
+    return try {
+        this.getObject(request) { result ->
+            val body = result.body ?: return@getObject Flux.empty<DataBuffer>()
+            body.toFlow()
+                .map {
+                    DefaultDataBufferFactory().wrap(it)
+                }
+                .asFlux()
+        }
+    } catch (e: Exception) {
+        throw S3ClientException(e.message ?: "Failed to retrieve object $resourceKey")
+    }
 }
