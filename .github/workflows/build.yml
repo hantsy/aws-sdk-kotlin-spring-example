@@ -32,6 +32,7 @@ jobs:
       run: |
         docker compose up -d localstack
         sleep 5
+        docker ps -a
     - name: Fix Gradlew permissions
       run: chmod a+x ./gradlew* 
     - name: Build with Gradle
