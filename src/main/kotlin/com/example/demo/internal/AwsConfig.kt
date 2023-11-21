@@ -34,7 +34,7 @@ class AwsConfig() {
     @Bean
     fun awsS3Client(awsCredentialsProvider: CredentialsProvider, properties: AwsProperties): S3Client {
         return S3Client {
-            credentialsProvider = StaticCredentialsProvider(credentials = Credentials("foo", "bar", "baz"))
+            credentialsProvider = awsCredentialsProvider
             region = properties.region
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
