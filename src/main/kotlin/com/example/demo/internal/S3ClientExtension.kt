@@ -8,12 +8,18 @@ import aws.sdk.kotlin.services.s3.model.HeadBucketRequest
 import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
+import aws.smithy.kotlin.runtime.content.toFlow
 import com.example.demo.toByteArray
 import com.example.demo.toFluxDataBuffer
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.reactor.asFlux
 import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.core.io.buffer.DataBufferFactory
+import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
 import reactor.core.publisher.Flux
+import reactor.kotlin.core.publisher.toFlux
 
 class S3ClientException(message: String) : RuntimeException(message)
 
@@ -94,7 +100,21 @@ suspend fun S3Client.retrieve(bucketName: String, resourceKey: String): ByteArra
 }
 
 suspend fun S3Client.retrieveAsFluxDataBuffer(bucketName: String, resourceKey: String): Flux<DataBuffer> {
-    return this.retrieve(bucketName, resourceKey)?.let {
-        return it.toFluxDataBuffer()
-    } ?: Flux.empty()
+    val request = GetObjectRequest {
+        bucket = bucketName
+        key = resourceKey
+    }
+
+    return try {
+        this.getObject(request) { result ->
+            val body = result.body ?: return@getObject Flux.empty()
+            body.toFlow()
+                .map{
+                    DefaultDataBufferFactory().wrap(it)
+                }
+                .asFlux()
+        }
+    } catch (e: Exception) {
+        throw S3ClientException(e.message ?: "Failed to retrieve object $resourceKey")
+    }
 }
