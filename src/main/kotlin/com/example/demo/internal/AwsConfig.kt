@@ -3,6 +3,7 @@ package com.example.demo.internal
 import aws.sdk.kotlin.runtime.auth.credentials.EnvironmentCredentialsProvider
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
+import aws.sdk.kotlin.services.secretsmanager.SecretsManagerClient
 import aws.smithy.kotlin.runtime.auth.awscredentials.CachedCredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
@@ -39,8 +40,26 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
 //            } ?: DefaultS3EndpointProvider()
-            endpointUrl= properties.endpoint?.let { Url.parse(it) }
+            endpointUrl = properties.endpoint?.let { Url.parse(it) }
             forcePathStyle = !properties.endpoint.isNullOrBlank()
+            logMode = LogMode.LogRequestWithBody
+        }
+    }
+
+    @Bean
+    fun secretsManagerClient(
+        awsCredentialsProvider: CredentialsProvider,
+        properties: AwsProperties
+    ): SecretsManagerClient {
+        return SecretsManagerClient {
+            credentialsProvider = awsCredentialsProvider
+            region = properties.region
+//            endpointProvider = properties.endpoint?.let { url ->
+//                SecretsManagerEndpointProvider { Endpoint(url) }
+//            } ?: DefaultSecretsManagerEndpointProvider()
+            endpointUrl = properties.endpoint?.let { Url.parse(it) }
+            // there is forcePathStyle
+            //forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
     }
