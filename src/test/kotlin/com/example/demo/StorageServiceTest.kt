@@ -2,13 +2,12 @@ package com.example.demo
 
 import com.example.demo.StorageServiceTest.StorageServiceTestConfig
 import com.example.demo.internal.AwsProperties
-import io.etip.backend.infrastructure.aws.AwsConfig
-import io.etip.backend.infrastructure.aws.S3StorageService
+import com.example.demo.internal.AwsConfig
+import com.example.demo.internal.S3StorageService
 import io.kotest.assertions.nondeterministic.continually
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Test

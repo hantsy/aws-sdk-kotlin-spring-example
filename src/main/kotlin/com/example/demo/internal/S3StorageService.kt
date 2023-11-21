@@ -1,4 +1,4 @@
-package io.etip.backend.infrastructure.aws
+package com.example.demo.internal
 
 import aws.sdk.kotlin.services.s3.S3Client
 import com.example.demo.internal.*
