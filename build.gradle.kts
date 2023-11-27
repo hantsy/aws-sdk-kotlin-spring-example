@@ -38,7 +38,7 @@ dependencies {
 	implementation("aws.sdk.kotlin:s3")
 	implementation("aws.sdk.kotlin:secretsmanager")
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
-	implementation("com.squareup.okhttp3:logging-interceptor;5.0.0-alpha.11")
+	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
