@@ -9,7 +9,7 @@ import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProviderChain
 import aws.smithy.kotlin.runtime.client.LogMode
-import aws.smithy.kotlin.runtime.net.Url
+import aws.smithy.kotlin.runtime.net.url.Url
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

@@ -5,7 +5,6 @@ import com.example.demo.internal.AwsConfig
 import com.example.demo.internal.AwsProperties
 import com.example.demo.internal.AwsSecretsManagementService
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
