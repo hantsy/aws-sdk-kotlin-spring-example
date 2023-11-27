@@ -22,6 +22,12 @@ repositories {
 }
 
 dependencies {
+
+	// maven bom
+//	implementation(platform("aws.sdk.kotlin:bom:1.0.0"))
+//	implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
+
+	// spring libs
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -29,9 +35,10 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
 	// aws sdk kotlin: s3
-	implementation("aws.sdk.kotlin:s3:0.35.0-beta")
-	implementation("aws.sdk.kotlin:secretsmanager:0.35.0-beta")
+	implementation("aws.sdk.kotlin:s3:1.0.0")
+	implementation("aws.sdk.kotlin:secretsmanager:1.0.0")
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+	implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.11")
 	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
