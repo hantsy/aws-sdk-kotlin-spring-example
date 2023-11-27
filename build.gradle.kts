@@ -24,8 +24,8 @@ repositories {
 dependencies {
 
 	// maven bom
-	implementation(platform("aws.sdk.kotlin:bom:1.0.0"))
-	implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
+//	implementation(platform("aws.sdk.kotlin:bom:1.0.0"))
+//	implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
 
 	// spring libs
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -35,8 +35,8 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
 	// aws sdk kotlin: s3
-	implementation("aws.sdk.kotlin:s3")
-	implementation("aws.sdk.kotlin:secretsmanager")
+	implementation("aws.sdk.kotlin:s3:1.0.0")
+	implementation("aws.sdk.kotlin:secretsmanager:1.0.0")
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 	implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.11")
 	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
