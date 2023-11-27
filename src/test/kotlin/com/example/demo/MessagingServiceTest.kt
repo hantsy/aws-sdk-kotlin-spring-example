@@ -19,7 +19,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @SpringBootTest(
     classes = [MessagingServiceTest.TestConfig::class],
-    properties = ["aws.endpoint=http://localhost:4566"]
+    properties = ["aws.sqs.endpoint=http://localhost:4566"]
 )
 class MessagingServiceTest @Autowired constructor(val messagingService: MessagingService) {
 

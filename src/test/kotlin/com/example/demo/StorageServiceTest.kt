@@ -24,7 +24,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @SpringBootTest(
     classes = [StorageServiceTestConfig::class],
-    properties = ["aws.endpoint=http://localhost:4566"]
+    properties = ["aws.s3.endpoint=http://localhost:4566"]
 )
 class StorageServiceTest @Autowired constructor(val storageService: StorageService) {
 
