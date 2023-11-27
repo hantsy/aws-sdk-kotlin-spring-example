@@ -10,7 +10,7 @@ const val DEFAULT_SQS_QUEUE_NAME = "default"
 data class AwsProperties(
     val accessKeyId: String,
     val secretAccessKey: String,
-    val region: String,
+    val region: String="us-east-1",
     val s3: S3Properties? = null,
     val secretsManager: SecretsManagerProperties? = null,
     val sqs: SqsProperties? = null
@@ -25,7 +25,7 @@ data class AwsProperties(
     )
 
     data class SqsProperties(
-        val queue: String = DEFAULT_SQS_QUEUE_NAME,
+        val queueName: String = DEFAULT_SQS_QUEUE_NAME,
         val endpoint: String? = "http://localhost:4566"
     )
 

@@ -30,7 +30,7 @@ class SqsMessagingService(
     @PostConstruct
     fun init() = runBlocking {
         log.debug("initializing SqsMessagingService...")
-        val queueNameVal = createQueue(properties.sqs?.queue?: DEFAULT_SQS_QUEUE_NAME)
+        val queueNameVal = createQueue(properties.sqs?.queueName?: DEFAULT_SQS_QUEUE_NAME)
         log.debug("created queue: $queueNameVal")
     }
 
