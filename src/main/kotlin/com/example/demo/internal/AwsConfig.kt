@@ -4,6 +4,7 @@ import aws.sdk.kotlin.runtime.auth.credentials.EnvironmentCredentialsProvider
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.secretsmanager.SecretsManagerClient
+import aws.sdk.kotlin.services.sqs.SqsClient
 import aws.smithy.kotlin.runtime.auth.awscredentials.CachedCredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
@@ -40,8 +41,8 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
 //            } ?: DefaultS3EndpointProvider()
-            endpointUrl = properties.endpoint?.let { Url.parse(it) }
-            forcePathStyle = !properties.endpoint.isNullOrBlank()
+            endpointUrl = properties.s3?.endpoint?.let { Url.parse(it) }
+            forcePathStyle = !properties.s3?.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
     }
@@ -57,9 +58,23 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                SecretsManagerEndpointProvider { Endpoint(url) }
 //            } ?: DefaultSecretsManagerEndpointProvider()
-            endpointUrl = properties.endpoint?.let { Url.parse(it) }
+            endpointUrl = properties.secretsManager?.endpoint?.let { Url.parse(it) }
             // there is no forcePathStyle for SecretsManagerClient
             // forcePathStyle = !properties.endpoint.isNullOrBlank()
+            logMode = LogMode.LogRequestWithBody
+        }
+    }
+
+    @Bean
+    fun sqsClient(
+        awsCredentialsProvider: CredentialsProvider,
+        properties: AwsProperties
+    ): SqsClient {
+        return SqsClient {
+            credentialsProvider = awsCredentialsProvider
+            region = properties.region
+            endpointUrl = properties.sqs?.endpoint?.let { Url.parse(it) }
+            // there is no forcePathStyle for SqsClient
             logMode = LogMode.LogRequestWithBody
         }
     }

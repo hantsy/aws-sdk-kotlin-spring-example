@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Import
 
 @SpringBootTest(
     classes = [AwsSecretsManagementServiceTestConfig::class],
-    properties = ["aws.endpoint=http://localhost:4566"]
+    properties = ["aws.secrets-manager.endpoint=http://localhost:4566"]
 )
 class AwsSecretsManagementServiceTest {
     companion object {

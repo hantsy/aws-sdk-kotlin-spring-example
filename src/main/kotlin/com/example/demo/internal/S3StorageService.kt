@@ -13,7 +13,7 @@ class S3StorageService(
     private val properties: AwsProperties,
     private val client: S3Client
 ) : StorageService {
-    val bucketName = properties.bucketName
+    val bucketName = properties.s3?.bucketName?: DEFAULT_BUCKET_NAME
 
     override suspend fun store(resourceKey: String, data: Flux<DataBuffer>) {
         try {
