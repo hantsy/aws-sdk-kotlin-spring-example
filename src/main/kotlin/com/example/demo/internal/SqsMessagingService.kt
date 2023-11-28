@@ -6,6 +6,7 @@ import aws.sdk.kotlin.services.sqs.model.GetQueueUrlRequest
 import aws.sdk.kotlin.services.sqs.model.ReceiveMessageRequest
 import aws.sdk.kotlin.services.sqs.model.SendMessageRequest
 import com.example.demo.MessagingService
+import com.example.demo.MessagingServiceException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.PostConstruct
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +43,11 @@ class SqsMessagingService(
             }
 
             val createQueueResponse = withContext(Dispatchers.IO) {
-                sqsClient.createQueue(createQueueRequest)
+                try {
+                    sqsClient.createQueue(createQueueRequest)
+                } catch (e: Exception) {
+                    throw MessagingServiceException(e.message ?: "Failed to create queue: $queueNameVal")
+                }
             }
             log.debug("created queue url ${createQueueResponse.queueUrl}")
             return createQueueResponse.queueUrl!!
@@ -75,7 +80,11 @@ class SqsMessagingService(
         }
 
         val sendMessageResponse = withContext(Dispatchers.IO) {
-            sqsClient.sendMessage(sendMessageRequest)
+            try {
+                sqsClient.sendMessage(sendMessageRequest)
+            } catch (e: Exception) {
+                throw MessagingServiceException(e.message ?: "Failed to send message")
+            }
         }
         log.debug("message ${sendMessageResponse.messageId} is sent out")
     }
@@ -89,7 +98,11 @@ class SqsMessagingService(
         }
 
         val receiveMessageResponse = withContext(Dispatchers.IO) {
-            sqsClient.receiveMessage(receiveMessageRequest)
+            try {
+                sqsClient.receiveMessage(receiveMessageRequest)
+            } catch (e: Exception) {
+                throw MessagingServiceException(e.message ?: "Failed to receive message")
+            }
         }
         return receiveMessageResponse
             .messages
