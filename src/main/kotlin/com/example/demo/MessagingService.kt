@@ -8,4 +8,7 @@ interface MessagingService {
     suspend fun getQueue(queueNameVal: String): String?
 }
 
+suspend inline fun <reified T:Any> MessagingService.receive(queueNameVal: String):List<T>
+    = this.receive(queueNameVal, T::class.java)
+
 class MessagingServiceException(val msg: String) : RuntimeException(msg)
