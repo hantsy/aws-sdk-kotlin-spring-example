@@ -36,7 +36,7 @@ dependencies {
 
 	// aws sdk kotlin: s3
 	implementation("aws.sdk.kotlin:s3:1.0.2")
-	implementation("aws.sdk.kotlin:secretsmanager:1.0.1")
+	implementation("aws.sdk.kotlin:secretsmanager:1.0.2")
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 	implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.11")
 	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
