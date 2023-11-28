@@ -17,5 +17,6 @@ class AutomaticMessageReceiver(val messagingService: MessagingService) {
             .forEach {
                 log.debug("received messaging service: $it")
             }
+        log.debug("like an event listener, do side effect...")
     }
 }
