@@ -35,7 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
     // aws sdk kotlin
-    implementation("aws.sdk.kotlin:s3:1.0.9")
+    implementation("aws.sdk.kotlin:s3:1.0.10")
     implementation("aws.sdk.kotlin:sqs:1.0.10")
     implementation("aws.sdk.kotlin:secretsmanager:1.0.9")
 
