@@ -37,7 +37,7 @@ dependencies {
     // aws sdk kotlin
     implementation("aws.sdk.kotlin:s3:1.0.18")
     implementation("aws.sdk.kotlin:sqs:1.0.14")
-    implementation("aws.sdk.kotlin:secretsmanager:1.0.14")
+    implementation("aws.sdk.kotlin:secretsmanager:1.0.18")
 
     // okhttp
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
