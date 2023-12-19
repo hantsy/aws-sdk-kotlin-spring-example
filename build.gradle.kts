@@ -36,7 +36,7 @@ dependencies {
 
     // aws sdk kotlin
     implementation("aws.sdk.kotlin:s3:1.0.18")
-    implementation("aws.sdk.kotlin:sqs:1.0.18")
+    implementation("aws.sdk.kotlin:sqs:1.0.19")
     implementation("aws.sdk.kotlin:secretsmanager:1.0.18")
 
     // okhttp
