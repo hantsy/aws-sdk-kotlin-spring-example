@@ -51,7 +51,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
     // https://mvnrepository.com/artifact/io.kotest/kotest-assertions-core-jvm
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.1")
 }
 
 tasks.withType<KotlinCompile> {
