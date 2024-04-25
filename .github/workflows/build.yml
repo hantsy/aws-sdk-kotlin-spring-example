@@ -36,6 +36,6 @@ jobs:
     - name: Fix Gradlew permissions
       run: chmod a+x ./gradlew* 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@bdf99f9dada2506e990bac6de8ec5e3de34a04f1 # v3.2.1
+      uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3.3.2
       with:
         arguments: build
