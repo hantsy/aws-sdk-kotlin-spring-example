@@ -13,11 +13,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.test.context.ContextConfiguration
 
-@SpringBootTest(
-    classes = [AwsSecretsManagementServiceTestConfig::class],
-    properties = ["aws.secrets-manager.endpoint=http://localhost:4566"]
-)
+@SpringBootTest(classes = [AwsSecretsManagementServiceTestConfig::class])
+@ContextConfiguration(initializers = [LocalstackDockerInitializer::class])
 class AwsSecretsManagementServiceTest {
     companion object {
         private val log = LoggerFactory.getLogger(AwsSecretsManagementServiceTest::class.java)

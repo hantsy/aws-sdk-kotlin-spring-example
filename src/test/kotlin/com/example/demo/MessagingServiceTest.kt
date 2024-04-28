@@ -15,12 +15,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.test.context.ContextConfiguration
 import kotlin.time.Duration.Companion.seconds
 
-@SpringBootTest(
-    classes = [MessagingServiceTest.TestConfig::class],
-    properties = ["aws.sqs.endpoint=http://localhost:4566"]
-)
+@SpringBootTest(classes = [MessagingServiceTest.TestConfig::class])
+@ContextConfiguration(initializers = [LocalstackDockerInitializer::class])
 class MessagingServiceTest @Autowired constructor(val messagingService: MessagingService) {
 
     @Configuration

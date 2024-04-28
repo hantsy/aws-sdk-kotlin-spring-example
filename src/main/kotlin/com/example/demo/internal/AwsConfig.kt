@@ -41,7 +41,7 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
 //            } ?: DefaultS3EndpointProvider()
-            endpointUrl = properties.s3?.endpoint?.let { Url.parse(it) }
+            endpointUrl = (properties.s3?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
             forcePathStyle = !properties.s3?.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
@@ -58,7 +58,7 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                SecretsManagerEndpointProvider { Endpoint(url) }
 //            } ?: DefaultSecretsManagerEndpointProvider()
-            endpointUrl = properties.secretsManager?.endpoint?.let { Url.parse(it) }
+            endpointUrl = (properties.secretsManager?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
             // there is no forcePathStyle for SecretsManagerClient
             // forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
@@ -73,7 +73,7 @@ class AwsConfig() {
         return SqsClient {
             credentialsProvider = awsCredentialsProvider
             region = properties.region
-            endpointUrl = properties.sqs?.endpoint?.let { Url.parse(it) }
+            endpointUrl = (properties.sqs?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
             // there is no forcePathStyle for SqsClient
             logMode = LogMode.LogRequestWithBody
         }

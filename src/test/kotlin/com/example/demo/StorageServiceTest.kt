@@ -1,8 +1,8 @@
 package com.example.demo
 
 import com.example.demo.StorageServiceTest.StorageServiceTestConfig
-import com.example.demo.internal.AwsProperties
 import com.example.demo.internal.AwsConfig
+import com.example.demo.internal.AwsProperties
 import com.example.demo.internal.S3StorageService
 import io.kotest.assertions.nondeterministic.continually
 import io.kotest.matchers.shouldBe
@@ -18,15 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.core.io.ClassPathResource
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.util.FileCopyUtils
 import java.nio.file.Files
 import java.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
-@SpringBootTest(
-    classes = [StorageServiceTestConfig::class],
-    properties = ["aws.s3.endpoint=http://localhost:4566"]
-)
+@SpringBootTest(classes = [StorageServiceTestConfig::class])
+@ContextConfiguration(initializers = [LocalstackDockerInitializer::class])
 class StorageServiceTest @Autowired constructor(val storageService: StorageService) {
 
     @Configuration
@@ -53,7 +52,7 @@ class StorageServiceTest @Autowired constructor(val storageService: StorageServi
             try {
                 storageService.retrieve(id)
             } catch (e: Exception) {
-                e.message shouldContain  "Failed to retrieve object $id"
+                e.message shouldContain "Failed to retrieve object $id"
             }
         }
     }
