@@ -9,8 +9,6 @@ kotest = "5.8.1"
 mockk = "1.13.10"
 springmockk = "4.0.2"
 awaitility = "4.2.1"
-# since aws sdk kotlin 0.16.4-beta, there is a transitive dependency okhttp3 5.x which is incompatible with
-# the one(4.x) used in auth0-java, we used the latest okHttp by force.
 okhttp = "5.0.0-alpha.14"
 awsSdkKotlin = "1.2.0"
 

@@ -7,7 +7,7 @@ import com.example.demo.internal.S3StorageService
 import io.kotest.assertions.nondeterministic.continually
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldStartWith
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
@@ -52,7 +52,7 @@ class StorageServiceTest @Autowired constructor(val storageService: StorageServi
             try {
                 storageService.retrieve(id)
             } catch (e: Exception) {
-                e.message shouldContain "Failed to retrieve object $id"
+                e.message shouldStartWith "The specified key does not exist"
             }
         }
     }

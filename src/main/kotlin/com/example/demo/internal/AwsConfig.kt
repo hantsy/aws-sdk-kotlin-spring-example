@@ -34,14 +34,15 @@ class AwsConfig() {
     // see: https://github.com/awslabs/aws-sdk-kotlin/issues/842
     @Bean
     fun awsS3Client(awsCredentialsProvider: CredentialsProvider, properties: AwsProperties): S3Client {
+        val endpoint = properties.s3?.endpoint ?: properties.endpoint
         return S3Client {
             credentialsProvider = awsCredentialsProvider
             region = properties.region
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
 //            } ?: DefaultS3EndpointProvider()
-            endpointUrl = (properties.s3?.endpoint ?: properties.endpoint)?.let { Url.parse(it) }
-            forcePathStyle = !properties.s3?.endpoint.isNullOrBlank()
+            endpointUrl = endpoint?.let { Url.parse(it) }
+            forcePathStyle = !endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
     }
