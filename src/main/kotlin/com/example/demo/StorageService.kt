@@ -5,7 +5,9 @@ import reactor.core.publisher.Flux
 
 interface StorageService {
     suspend fun store(resourceKey: String, data: Flux<DataBuffer>)
+
     suspend fun retrieve(resourceKey: String): Flux<DataBuffer>?
+
     suspend fun delete(resourceKey: String)
 }
 

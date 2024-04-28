@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class AwsSecretsManagementService(
-    private val client: SecretsManagerClient
-) : SecretsManagementService {
+class AwsSecretsManagementService(private val client: SecretsManagerClient) : SecretsManagementService {
     companion object {
         private val log = LoggerFactory.getLogger(SecretsManagementService::class.java)
     }

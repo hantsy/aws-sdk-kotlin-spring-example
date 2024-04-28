@@ -1,7 +1,6 @@
 package com.example.demo.internal
 
 import aws.sdk.kotlin.services.s3.S3Client
-import com.example.demo.internal.*
 import com.example.demo.StorageService
 import com.example.demo.StorageServiceException
 import org.springframework.core.io.buffer.DataBuffer
@@ -11,9 +10,9 @@ import reactor.core.publisher.Flux
 @Service
 class S3StorageService(
     private val properties: AwsProperties,
-    private val client: S3Client
+    private val client: S3Client,
 ) : StorageService {
-    val bucketName = properties.s3?.bucketName?: DEFAULT_BUCKET_NAME
+    val bucketName = properties.s3?.bucketName ?: DEFAULT_BUCKET_NAME
 
     override suspend fun store(resourceKey: String, data: Flux<DataBuffer>) {
         try {

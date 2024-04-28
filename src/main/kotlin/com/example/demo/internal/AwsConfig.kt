@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class AwsConfig() {
-
     @Bean
     fun awsCredentialsProvider(properties: AwsProperties): CredentialsProvider {
         val chain = CredentialsProviderChain(
@@ -24,7 +23,7 @@ class AwsConfig() {
             StaticCredentialsProvider(
                 Credentials(
                     secretAccessKey = properties.secretAccessKey,
-                    accessKeyId = properties.accessKeyId
+                    accessKeyId = properties.accessKeyId,
                 )
             )
         )
@@ -32,7 +31,7 @@ class AwsConfig() {
         return CachedCredentialsProvider(chain)
     }
 
-    //see: https://github.com/awslabs/aws-sdk-kotlin/issues/842
+    // see: https://github.com/awslabs/aws-sdk-kotlin/issues/842
     @Bean
     fun awsS3Client(awsCredentialsProvider: CredentialsProvider, properties: AwsProperties): S3Client {
         return S3Client {
@@ -41,7 +40,7 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                S3EndpointProvider { Endpoint(url) }
 //            } ?: DefaultS3EndpointProvider()
-            endpointUrl = (properties.s3?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
+            endpointUrl = (properties.s3?.endpoint ?: properties.endpoint)?.let { Url.parse(it) }
             forcePathStyle = !properties.s3?.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
         }
@@ -58,7 +57,7 @@ class AwsConfig() {
 //            endpointProvider = properties.endpoint?.let { url ->
 //                SecretsManagerEndpointProvider { Endpoint(url) }
 //            } ?: DefaultSecretsManagerEndpointProvider()
-            endpointUrl = (properties.secretsManager?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
+            endpointUrl = (properties.secretsManager?.endpoint ?: properties.endpoint)?.let { Url.parse(it) }
             // there is no forcePathStyle for SecretsManagerClient
             // forcePathStyle = !properties.endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
@@ -66,14 +65,11 @@ class AwsConfig() {
     }
 
     @Bean
-    fun sqsClient(
-        awsCredentialsProvider: CredentialsProvider,
-        properties: AwsProperties
-    ): SqsClient {
+    fun sqsClient(awsCredentialsProvider: CredentialsProvider, properties: AwsProperties): SqsClient {
         return SqsClient {
             credentialsProvider = awsCredentialsProvider
             region = properties.region
-            endpointUrl = (properties.sqs?.endpoint?: properties.endpoint)?.let { Url.parse(it) }
+            endpointUrl = (properties.sqs?.endpoint ?: properties.endpoint)?.let { Url.parse(it) }
             // there is no forcePathStyle for SqsClient
             logMode = LogMode.LogRequestWithBody
         }

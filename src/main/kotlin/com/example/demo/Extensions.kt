@@ -7,7 +7,6 @@ import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import reactor.core.publisher.Flux
 
-
 fun ByteArray.toFluxDataBuffer(): Flux<DataBuffer> =
     DataBufferUtils.read(ByteArrayResource(this), DefaultDataBufferFactory(), 4096)
 

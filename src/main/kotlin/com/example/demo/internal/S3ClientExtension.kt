@@ -40,9 +40,10 @@ suspend fun S3Client.bucketExists(s3bucket: String) = try {
 
 suspend fun S3Client.createBucketIfNotExists(bucketName: String) {
     if (!this.bucketExists(bucketName)) {
-        val request = CreateBucketRequest {
-            bucket = bucketName
-        }
+        val request =
+            CreateBucketRequest {
+                bucket = bucketName
+            }
         try {
             this.createBucket(request)
         } catch (e: Exception) {

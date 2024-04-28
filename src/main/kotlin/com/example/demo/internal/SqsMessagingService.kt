@@ -19,9 +19,8 @@ import org.springframework.stereotype.Service
 class SqsMessagingService(
     private val properties: AwsProperties,
     private val sqsClient: SqsClient,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : MessagingService {
-
     companion object {
         private val log = LoggerFactory.getLogger(SqsMessagingService::class.java)
         const val MAX_NUMBER_OF_RECEIVED_MESSAGES = 5
@@ -38,17 +37,19 @@ class SqsMessagingService(
     override suspend fun createQueue(queueNameVal: String): String {
         return getQueue(queueNameVal) ?: run {
             log.debug("queue $queueNameVal does not exist, create one")
-            val createQueueRequest = CreateQueueRequest {
-                queueName = queueNameVal
-            }
-
-            val createQueueResponse = withContext(Dispatchers.IO) {
-                try {
-                    sqsClient.createQueue(createQueueRequest)
-                } catch (e: Exception) {
-                    throw MessagingServiceException(e.message ?: "Failed to create queue: $queueNameVal")
+            val createQueueRequest =
+                CreateQueueRequest {
+                    queueName = queueNameVal
                 }
-            }
+
+            val createQueueResponse =
+                withContext(Dispatchers.IO) {
+                    try {
+                        sqsClient.createQueue(createQueueRequest)
+                    } catch (e: Exception) {
+                        throw MessagingServiceException(e.message ?: "Failed to create queue: $queueNameVal")
+                    }
+                }
             log.debug("created queue url ${createQueueResponse.queueUrl}")
             return createQueueResponse.queueUrl!!
         }
@@ -56,54 +57,60 @@ class SqsMessagingService(
 
     override suspend fun getQueue(queueNameVal: String): String? {
         log.debug("get queue by name: $queueNameVal")
-        val getQueueUrlRequest = GetQueueUrlRequest {
-            queueName = queueNameVal
-        }
-
-        val getQueueUrlResponse = withContext(Dispatchers.IO) {
-            try {
-                sqsClient.getQueueUrl(getQueueUrlRequest)
-            } catch (_: Exception) {
-                null
+        val getQueueUrlRequest =
+            GetQueueUrlRequest {
+                queueName = queueNameVal
             }
-        }
+
+        val getQueueUrlResponse =
+            withContext(Dispatchers.IO) {
+                try {
+                    sqsClient.getQueueUrl(getQueueUrlRequest)
+                } catch (_: Exception) {
+                    null
+                }
+            }
         return getQueueUrlResponse?.queueUrl
     }
 
     override suspend fun send(queueNameVal: String, message: Any) {
         val getQueueUrl = getQueue(queueNameVal)
 
-        val sendMessageRequest = SendMessageRequest {
-            queueUrl = getQueueUrl
-            delaySeconds = DELAY_IN_SECONDS
-            messageBody = objectMapper.writeValueAsString(message)
-        }
-
-        val sendMessageResponse = withContext(Dispatchers.IO) {
-            try {
-                sqsClient.sendMessage(sendMessageRequest)
-            } catch (e: Exception) {
-                throw MessagingServiceException(e.message ?: "Failed to send message")
+        val sendMessageRequest =
+            SendMessageRequest {
+                queueUrl = getQueueUrl
+                delaySeconds = DELAY_IN_SECONDS
+                messageBody = objectMapper.writeValueAsString(message)
             }
-        }
+
+        val sendMessageResponse =
+            withContext(Dispatchers.IO) {
+                try {
+                    sqsClient.sendMessage(sendMessageRequest)
+                } catch (e: Exception) {
+                    throw MessagingServiceException(e.message ?: "Failed to send message")
+                }
+            }
         log.debug("message ${sendMessageResponse.messageId} is sent out")
     }
 
     override suspend fun <T : Any> receive(queueNameVal: String, clazz: Class<out T>): List<T> {
         val getQueueUrl = getQueue(queueNameVal)
 
-        val receiveMessageRequest = ReceiveMessageRequest {
-            queueUrl = getQueueUrl
-            maxNumberOfMessages = MAX_NUMBER_OF_RECEIVED_MESSAGES
-        }
-
-        val receiveMessageResponse = withContext(Dispatchers.IO) {
-            try {
-                sqsClient.receiveMessage(receiveMessageRequest)
-            } catch (e: Exception) {
-                throw MessagingServiceException(e.message ?: "Failed to receive message")
+        val receiveMessageRequest =
+            ReceiveMessageRequest {
+                queueUrl = getQueueUrl
+                maxNumberOfMessages = MAX_NUMBER_OF_RECEIVED_MESSAGES
             }
-        }
+
+        val receiveMessageResponse =
+            withContext(Dispatchers.IO) {
+                try {
+                    sqsClient.receiveMessage(receiveMessageRequest)
+                } catch (e: Exception) {
+                    throw MessagingServiceException(e.message ?: "Failed to receive message")
+                }
+            }
         return receiveMessageResponse
             .messages
             ?.mapNotNull { message ->
