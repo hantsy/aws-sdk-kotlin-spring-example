@@ -3,10 +3,17 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
+
+//    id("org.springframework.boot") version "3.2.5"
+    alias(libs.plugins.springBoot)
+//    id("io.spring.dependency-management") version "1.1.4"
+    alias(libs.plugins.dependencyManagement)
+//    kotlin("jvm") version "1.9.23"
+    alias(libs.plugins.kotlinJvm)
+//    kotlin("plugin.spring") version "1.9.23"
+    alias(libs.plugins.kotlinPluginSpring)
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.testLogger)
 }
 
 group = "com.example"
@@ -28,30 +35,40 @@ dependencies {
     // implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
 
     // spring libs
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation(libs.bundles.core)
+    //implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    implementation(libs.bundles.kotlinSupport)
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+//    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+//    implementation("org.jetbrains.kotlin:kotlin-reflect")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
     // aws sdk kotlin
-    implementation("aws.sdk.kotlin:s3:1.0.66")
-    implementation("aws.sdk.kotlin:sqs:1.0.66")
-    implementation("aws.sdk.kotlin:secretsmanager:1.0.66")
+    implementation(libs.bundles.awsSdkKotlin)
+//    implementation("aws.sdk.kotlin:s3:1.0.66")
+//    implementation("aws.sdk.kotlin:sqs:1.0.66")
+//    implementation("aws.sdk.kotlin:secretsmanager:1.0.66")
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-    implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.14")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
+    implementation(libs.bundles.okhttp)
+//    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+//    implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.14")
+//    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
 
     // test libs
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+    testImplementation(libs.bundles.testcore)
+   // testImplementation(libs.bundles.mockk)
+//    testImplementation("io.projectreactor:reactor-test")
+//    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+
+    testImplementation(libs.bundles.testcontainers)
+//    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+//    testImplementation("org.testcontainers:junit-jupiter")
+
     // https://mvnrepository.com/artifact/io.kotest/kotest-assertions-core-jvm
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.1")
+    testImplementation(libs.bundles.kotest)
+    //testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.1")
 }
 
 tasks.withType<KotlinCompile> {

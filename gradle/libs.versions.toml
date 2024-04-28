@@ -1,0 +1,84 @@
+[versions]
+springboot = "3.2.5"
+springDependencyManagement = "1.1.4"
+kotlinter = "4.3.0"
+testLogger = "4.0.0"
+kotlin = "1.9.23"
+kotlinCoroutines = "1.8.0"
+kotest = "5.8.1"
+mockk = "1.13.10"
+springmockk = "4.0.2"
+awaitility = "4.2.1"
+# since aws sdk kotlin 0.16.4-beta, there is a transitive dependency okhttp3 5.x which is incompatible with
+# the one(4.x) used in auth0-java, we used the latest okHttp by force.
+okhttp = "5.0.0-alpha.14"
+awsSdkKotlin = "1.2.0"
+
+[libraries]
+# Reactive support
+starterWebflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
+
+# Kotlin Extensions
+jacksonKotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+reactorKotlinExtetions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions" }
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+kotlinCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+kotlinCoroutinesCoreJvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinCoroutines" }
+kotlinCoroutinesJdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinCoroutines" }
+kotlinCoroutinesReactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinCoroutines" }
+kotlinCoroutinesReactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinCoroutines" }
+
+# okhttp
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttpCoroutines = { module = "com.squareup.okhttp3:okhttp-coroutines", version.ref = "okhttp" }
+okhttpLoggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+# AWS Sdk for Kotlin
+awsSdkKotlinS3 = { module = "aws.sdk.kotlin:s3", version.ref = "awsSdkKotlin" }
+awsSdkKotlinSecretManager = { module = "aws.sdk.kotlin:secretsmanager", version.ref = "awsSdkKotlin" }
+awsSdkHttp = { module = "aws.sdk.kotlin:aws-http", version.ref = "awsSdkKotlin" }
+awsSqs = { module = "aws.sdk.kotlin:sqs", version.ref = "awsSdkKotlin" }
+
+# Test depedencies
+starterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+reactorTest = { module = "io.projectreactor:reactor-test" }
+testcontainersJunitJupiter = { module = "org.testcontainers:junit-jupiter" }
+testcontainersLocalstack = { module = "org.testcontainers:localstack" }
+springBootTestcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
+
+# Kotlin Coroutines Test
+kotlinCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+
+# Kotest Assertions
+kotestAssertionsCoreJvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+
+# Mockk
+mockk = { module = "io.mockk:mockk-jvm", version.ref = "mockk" }
+springmockk = { module = "com.ninja-squad:springmockk", version.ref = "springmockk" }
+
+# Awaitility
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+awaitilityKotlin = { module = "org.awaitility:awaitility-kotlin", version.ref = "awaitility" }
+
+[bundles]
+core = ["starterWebflux"]
+awsSdkKotlin = ["awsSdkHttp", "awsSdkKotlinS3", "awsSdkKotlinSecretManager", "awsSqs"]
+okhttp = ["okhttp", "okhttpCoroutines", "okhttpLoggingInterceptor"]
+kotlinSupport = ["jacksonKotlin", "kotlinReflect", "kotlinStdlib", "reactorKotlinExtetions", "kotlinCoroutinesCore",
+    "kotlinCoroutinesCoreJvm", "kotlinCoroutinesJdk8", "kotlinCoroutinesReactive", "kotlinCoroutinesReactor"]
+
+# test libs
+testcore = ["starterTest", "reactorTest", "kotlinCoroutinesTest"]
+testcontainers = ["testcontainersJunitJupiter", "testcontainersLocalstack", "springBootTestcontainers"]
+kotest = ["kotestAssertionsCoreJvm"]
+mockk = ["mockk", "springmockk"]
+awaitility = ["awaitility", "awaitilityKotlin"]
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "springboot" }
+dependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinPluginSpring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+testLogger = { id = "com.adarshr.test-logger", version.ref = "testLogger" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
