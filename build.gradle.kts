@@ -40,9 +40,9 @@ dependencies {
     implementation("aws.sdk.kotlin:secretsmanager:1.0.66")
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
-    implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.12")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    implementation("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.14")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
 
     // test libs
     testImplementation("org.springframework.boot:spring-boot-starter-test")
