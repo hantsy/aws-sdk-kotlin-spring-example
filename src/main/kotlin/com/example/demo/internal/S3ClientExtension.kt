@@ -96,6 +96,7 @@ suspend fun S3Client.store(bucketName: String, resourceKey: String, data: Flux<D
         body = byteArrayFlow.toByteStream(applicationScope)
         key = resourceKey
         contentType = mediaType.toString()
+        checksumAlgorithm = ChecksumAlgorithm.Sha256
     }
     val result = try {
         this.putObject(request)
