@@ -10,7 +10,7 @@ mockk = "1.13.11"
 springmockk = "4.0.2"
 awaitility = "4.2.1"
 okhttp = "5.0.0-alpha.14"
-awsSdkKotlin = "1.2.39"
+awsSdkKotlin = "1.2.40"
 
 [libraries]
 # Reactive support
