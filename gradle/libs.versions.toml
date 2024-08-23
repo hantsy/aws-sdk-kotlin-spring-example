@@ -1,5 +1,5 @@
 [versions]
-springboot = "3.3.2"
+springboot = "3.3.3"
 springDependencyManagement = "1.1.6"
 kotlinter = "4.4.1"
 testLogger = "4.0.0"
