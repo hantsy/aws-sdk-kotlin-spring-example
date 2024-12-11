@@ -1,19 +1,14 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
-
-//    id("org.springframework.boot") version "3.2.5"
     alias(libs.plugins.springBoot)
-//    id("io.spring.dependency-management") version "1.1.4"
     alias(libs.plugins.dependencyManagement)
-//    kotlin("jvm") version "1.9.23"
     alias(libs.plugins.kotlinJvm)
-//    kotlin("plugin.spring") version "1.9.23"
     alias(libs.plugins.kotlinPluginSpring)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.testLogger)
@@ -21,10 +16,6 @@ plugins {
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-}
 
 repositories {
     mavenCentral()
@@ -74,10 +65,16 @@ dependencies {
     //testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.1")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "21"
+kotlin {
+    jvmToolchain(21)
+    compilerOptions {
+        apiVersion.set(KotlinVersion.KOTLIN_2_0)
+        languageVersion.set(KotlinVersion.KOTLIN_2_0)
+        freeCompilerArgs.addAll(
+            "-Xjsr305=strict",
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
     }
 }
 
