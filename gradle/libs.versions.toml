@@ -9,7 +9,7 @@ kotest = "5.9.1"
 mockk = "1.14.0"
 springmockk = "4.0.2"
 awaitility = "4.3.0"
-okhttp = "5.0.0-alpha.14"
+okhttp = "5.0.0-alpha.16"
 awsSdkKotlin = "1.4.98"
 
 [libraries]
