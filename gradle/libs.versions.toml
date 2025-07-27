@@ -1,7 +1,7 @@
 [versions]
 springboot = "3.5.3"
 springDependencyManagement = "1.1.7"
-kotlinter = "5.1.1"
+kotlinter = "5.2.0"
 testLogger = "4.0.0"
 kotlin = "2.2.0"
 kotlinCoroutines = "1.10.2"
