@@ -1,30 +1,31 @@
 [versions]
-springboot = "3.5.6"
+java = "25"
+springboot = "4.2.0"
 springDependencyManagement = "1.1.7"
-kotlinter = "5.2.0"
+kotlin = "2.4.10"
+kotlinCoroutines = "1.11.0"
+kotlinter = "5.7.0"
 testLogger = "4.0.0"
-kotlin = "2.2.20"
-kotlinCoroutines = "1.10.2"
-kotest = "6.0.3"
-mockk = "1.14.5"
-springmockk = "4.0.2"
+kotest = "6.2.7"
+mockk = "1.14.12"
+springmockk = "5.0.1"
 awaitility = "4.3.0"
-okhttp = "5.1.0"
-awsSdkKotlin = "1.5.49"
+okhttp = "5.5.1"
+awsSdkKotlin = "1.9.45"
+junit = "6.1.3"
 
 [libraries]
-# Reactive support
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+# Web
 starterWebflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
+starterWebclient = { module = "org.springframework.boot:spring-boot-starter-webclient" }
 
-# Kotlin Extensions
-jacksonKotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
-reactorKotlinExtetions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions" }
+# Kotlin support
+jacksonKotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
+reactorKotlinExtensions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions" }
 kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlinCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
-kotlinCoroutinesCoreJvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinCoroutines" }
-kotlinCoroutinesJdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinCoroutines" }
-kotlinCoroutinesReactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinCoroutines" }
 kotlinCoroutinesReactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinCoroutines" }
 
 # okhttp
@@ -32,46 +33,50 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttpCoroutines = { module = "com.squareup.okhttp3:okhttp-coroutines", version.ref = "okhttp" }
 okhttpLoggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 
-# AWS Sdk for Kotlin
+# AWS SDK for Kotlin
+awsSdkKotlinHttp = { module = "aws.sdk.kotlin:aws-http", version.ref = "awsSdkKotlin" }
 awsSdkKotlinS3 = { module = "aws.sdk.kotlin:s3", version.ref = "awsSdkKotlin" }
 awsSdkKotlinSecretManager = { module = "aws.sdk.kotlin:secretsmanager", version.ref = "awsSdkKotlin" }
-awsSdkHttp = { module = "aws.sdk.kotlin:aws-http", version.ref = "awsSdkKotlin" }
 awsSqs = { module = "aws.sdk.kotlin:sqs", version.ref = "awsSdkKotlin" }
 
-# Test depedencies
-starterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+# Test dependencies
+webfluxTest = { module = "org.springframework.boot:spring-boot-starter-webflux-test" }
 reactorTest = { module = "io.projectreactor:reactor-test" }
-testcontainersJunitJupiter = { module = "org.testcontainers:junit-jupiter" }
-testcontainersLocalstack = { module = "org.testcontainers:localstack" }
+testcontainersJunitJupiter = { module = "org.testcontainers:testcontainers-junit-jupiter" }
+testcontainersLocalstack = { module = "org.testcontainers:testcontainers-localstack" }
 springBootTestcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
-
-# Kotlin Coroutines Test
+kotlinTestJunit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
 kotlinCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
-
-# Kotest Assertions
 kotestAssertionsCoreJvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
-
-# Mockk
 mockk = { module = "io.mockk:mockk-jvm", version.ref = "mockk" }
 springmockk = { module = "com.ninja-squad:springmockk", version.ref = "springmockk" }
-
-# Awaitility
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
 awaitilityKotlin = { module = "org.awaitility:awaitility-kotlin", version.ref = "awaitility" }
+junitPlatformLauncher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 
 [bundles]
-core = ["starterWebflux"]
-awsSdkKotlin = ["awsSdkHttp", "awsSdkKotlinS3", "awsSdkKotlinSecretManager", "awsSqs"]
+core = ["starterWebflux", "starterWebclient"]
+
+kotlinSupport = [
+    "jacksonKotlin",
+    "kotlinReflect",
+    "kotlinStdlib",
+    "reactorKotlinExtensions",
+    "kotlinCoroutinesCore",
+    "kotlinCoroutinesReactor",
+]
+
+awsSdkKotlin = ["awsSdkKotlinHttp", "awsSdkKotlinS3", "awsSdkKotlinSecretManager", "awsSqs"]
+
 okhttp = ["okhttp", "okhttpCoroutines", "okhttpLoggingInterceptor"]
-kotlinSupport = ["jacksonKotlin", "kotlinReflect", "kotlinStdlib", "reactorKotlinExtetions", "kotlinCoroutinesCore",
-    "kotlinCoroutinesCoreJvm", "kotlinCoroutinesJdk8", "kotlinCoroutinesReactive", "kotlinCoroutinesReactor"]
 
 # test libs
-testcore = ["starterTest", "reactorTest", "kotlinCoroutinesTest"]
+testcore = ["webfluxTest", "reactorTest", "kotlinCoroutinesTest"]
 testcontainers = ["testcontainersJunitJupiter", "testcontainersLocalstack", "springBootTestcontainers"]
 kotest = ["kotestAssertionsCoreJvm"]
 mockk = ["mockk", "springmockk"]
 awaitility = ["awaitility", "awaitilityKotlin"]
+kotlintest = ["kotlinTestJunit5"]
 
 [plugins]
 springBoot = { id = "org.springframework.boot", version.ref = "springboot" }

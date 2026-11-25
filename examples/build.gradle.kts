@@ -1,0 +1,96 @@
+import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
+plugins {
+    alias(libs.plugins.springBoot)
+    alias(libs.plugins.dependencyManagement)
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinPluginSpring)
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.testLogger)
+}
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring libs
+    implementation(libs.bundles.core)
+
+    // kotlin support
+    implementation(libs.bundles.kotlinSupport)
+
+    // aws sdk kotlin
+    implementation(libs.bundles.awsSdkKotlin)
+
+    // okhttp
+    implementation(libs.bundles.okhttp)
+
+    // test libs
+    testImplementation(libs.bundles.testcore)
+    testImplementation(libs.bundles.testcontainers)
+    testImplementation(libs.bundles.kotest)
+    testImplementation(libs.bundles.mockk)
+    testImplementation(libs.bundles.awaitility)
+    testImplementation(libs.bundles.kotlintest)
+    testRuntimeOnly(libs.junitPlatformLauncher)
+}
+
+kotlin {
+    jvmToolchain(libs.versions.java.get().toInt())
+    compilerOptions {
+        jvmDefault = JvmDefaultMode.NO_COMPATIBILITY
+        progressiveMode.set(true)
+        freeCompilerArgs.addAll(
+            "-Xjsr305=strict",
+        )
+        optIn.addAll(
+            "kotlin.RequiresOptIn",
+            "kotlinx.coroutines.ExperimentalCoroutinesApi",
+        )
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    minHeapSize = "128m"
+    maxHeapSize = "2048m"
+}
+
+tasks.withType<LintTask> {
+    exclude { it.file.path.contains("build/generated") }
+}
+
+tasks.withType<FormatTask> {
+    exclude { it.file.path.contains("build/generated") }
+}
+
+kotlinter {
+    ignoreLintFailures = false
+    reporters = arrayOf("checkstyle", "plain")
+}
+
+testlogger {
+    theme = MOCHA
+    showExceptions = true
+    showStackTraces = true
+    showFullStackTraces = false
+    showCauses = true
+    slowThreshold = 2000
+    showSummary = true
+    showPassed = true
+    showSkipped = true
+    showFailed = true
+    showStandardStreams = false
+    logLevel = LogLevel.LIFECYCLE
+}
+
+springBoot {
+    buildInfo()
+}
