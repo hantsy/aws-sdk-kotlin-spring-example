@@ -10,18 +10,15 @@ import java.net.URI
  * LocalStack has no Spring Boot service connection, so the endpoint is injected with
  * [org.springframework.test.context.DynamicPropertySource] instead.
  *
- * The image and the license token are taken from the environment, so that CI can run the
- * tests against a licensed LocalStack image.
+ * The license token is taken from the environment, so that CI can run the tests
+ * against a licensed LocalStack image.
  */
 object LocalstackTestContainer {
     /**
      * LocalStack 4 requires a license token, set LOCALSTACK_AUTH_TOKEN to run it.
-     * Use LOCALSTACK_IMAGE=localstack/localstack:3.0 for the last community edition
-     * that runs without a token.
      */
-    private const val DEFAULT_IMAGE = "localstack/localstack:4"
+    private const val IMAGE = "localstack/localstack:4"
 
-    private val image = System.getenv("LOCALSTACK_IMAGE")?.takeIf { it.isNotBlank() } ?: DEFAULT_IMAGE
     private val authToken = System.getenv("LOCALSTACK_AUTH_TOKEN")?.takeIf { it.isNotBlank() }
 
     private val requiredServices = listOf("s3", "sqs", "secretsmanager")
@@ -29,7 +26,7 @@ object LocalstackTestContainer {
     private const val POLL_INTERVAL_MILLIS = 500L
 
     private val container: LocalStackContainer =
-        LocalStackContainer(DockerImageName.parse(image)).also { localStack ->
+        LocalStackContainer(DockerImageName.parse(IMAGE)).also { localStack ->
             authToken?.let { localStack.withEnv("LOCALSTACK_AUTH_TOKEN", it) }
             localStack.start()
         }

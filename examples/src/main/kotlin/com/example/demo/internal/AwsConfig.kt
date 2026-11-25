@@ -10,8 +10,6 @@ import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProviderChain
 import aws.smithy.kotlin.runtime.client.LogMode
-import aws.smithy.kotlin.runtime.client.config.RequestHttpChecksumConfig
-import aws.smithy.kotlin.runtime.client.config.ResponseHttpChecksumConfig
 import aws.smithy.kotlin.runtime.net.url.Url
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -46,12 +44,6 @@ class AwsConfig {
             endpointUrl = endpoint?.let { Url.parse(it) }
             forcePathStyle = !endpoint.isNullOrBlank()
             logMode = LogMode.LogRequestWithBody
-            if (properties.disableChecksumValidation) {
-                // S3 compatible services that do not implement the flexible checksums,
-                // LocalStack 3.x for example, make the SDK fail every read.
-                requestChecksumCalculation = RequestHttpChecksumConfig.WHEN_REQUIRED
-                responseChecksumValidation = ResponseHttpChecksumConfig.WHEN_REQUIRED
-            }
         }
     }
 

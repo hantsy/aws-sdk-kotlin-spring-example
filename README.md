@@ -31,27 +31,17 @@ The integration tests run against a LocalStack container that is started by the 
 suite itself; the endpoint is injected with `@DynamicPropertySource`, because
 LocalStack has no Spring Boot service connection.
 
-LocalStack 4 needs a license token, both are taken from the environment:
+The tests run against `localstack/localstack:4`, which needs a license token that is
+taken from the environment:
 
 | Variable | Purpose |
 | --- | --- |
 | `LOCALSTACK_AUTH_TOKEN` | license token of the LocalStack image |
-| `LOCALSTACK_IMAGE` | image to run, defaults to `localstack/localstack:4` |
 
 ```bash
 export LOCALSTACK_AUTH_TOKEN=<your token>
 ./gradlew build
 ```
-
-The license free community edition, `localstack/localstack:3.0`, can be used as well:
-
-```bash
-LOCALSTACK_IMAGE=localstack/localstack:3.0 AWS_DISABLE_CHECKSUM_VALIDATION=true ./gradlew build
-```
-
-LocalStack 3.x does not implement the flexible checksum headers that the AWS SDK
-validates by default, so the checksum validation has to be turned off for it, see
-`aws.disable-checksum-validation`.
 
 ## Resources
 

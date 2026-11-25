@@ -1,8 +1,7 @@
 services:
   localstack:
     # LocalStack 4 requires a license token, set LOCALSTACK_AUTH_TOKEN to run it.
-    # Use localstack/localstack:3.0 for the last community edition that runs without a token.
-    image: ${LOCALSTACK_IMAGE:-localstack/localstack:4}
+    image: localstack/localstack:4
     ports:
       - "4566:4566"
     environment:

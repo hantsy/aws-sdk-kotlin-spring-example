@@ -22,10 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Optional: only needed when running a licensed LocalStack image.
-      # LOCALSTACK_AUTH_TOKEN is a repository secret, LOCALSTACK_IMAGE is a repository variable.
+      # The license token of the LocalStack image, stored as a repository secret.
       LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
-      LOCALSTACK_IMAGE: ${{ vars.LOCALSTACK_IMAGE }}
 
     steps:
     - uses: actions/checkout@v5

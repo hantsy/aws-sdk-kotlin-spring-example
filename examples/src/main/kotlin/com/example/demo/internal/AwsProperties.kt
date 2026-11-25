@@ -15,13 +15,6 @@ data class AwsProperties(
     val s3: S3Properties? = null,
     val secretsManager: SecretsManagerProperties? = null,
     val sqs: SqsProperties? = null,
-    /**
-     * Turns off the flexible checksum handling of the AWS SDK.
-     *
-     * The SDK validates the S3 checksums by default, which only S3 implementations that
-     * support the flexible checksum headers, LocalStack 4 and later, can satisfy.
-     */
-    val disableChecksumValidation: Boolean = false,
 ) {
     data class S3Properties(val bucketName: String = DEFAULT_BUCKET_NAME, val endpoint: String? = null,)
 
