@@ -1,0 +1,30 @@
+{
+  "groups": [
+    {
+      "name": "awskotlin.secrets-manager",
+      "type": "io.github.hantsy.awskotlin.secretsmanager.autoconfigure.SecretsManagerProperties",
+      "sourceType": "io.github.hantsy.awskotlin.secretsmanager.autoconfigure.SecretsManagerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "awskotlin.secrets-manager.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether Secrets Manager auto-configuration is enabled.",
+      "sourceType": "io.github.hantsy.awskotlin.secretsmanager.autoconfigure.SecretsManagerProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.secrets-manager.endpoint",
+      "type": "java.lang.String",
+      "description": "Override the Secrets Manager endpoint URL (for example, a LocalStack endpoint). Falls back to awskotlin.endpoint.",
+      "sourceType": "io.github.hantsy.awskotlin.secretsmanager.autoconfigure.SecretsManagerProperties"
+    },
+    {
+      "name": "awskotlin.secrets-manager.region",
+      "type": "java.lang.String",
+      "description": "Override the Secrets Manager region. Falls back to awskotlin.region, then the SDK default region chain.",
+      "sourceType": "io.github.hantsy.awskotlin.secretsmanager.autoconfigure.SecretsManagerProperties"
+    }
+  ]
+}

@@ -6,15 +6,19 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
-pluginManagement {
-    // Include 'plugins build' to define convention plugins.
-    includeBuild("aws-build-tool")
-}
-
 plugins {
     // Apply the foojay-resolver plugin to allow automatic download of JDKs
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 
 rootProject.name = "aws-sdk-kotlin-spring"
-include( "list", "utilities", "examples")
+include("examples")
+include("core")
+include("s3")
+include("secrets-manager")
+include("sns")
+include("sqs")
+include("starters:s3-starter")
+include("starters:secrets-manager-starter")
+include("starters:sns-starter")
+include("starters:sqs-starter")

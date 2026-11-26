@@ -1,0 +1,36 @@
+{
+  "groups": [
+    {
+      "name": "awskotlin.s3",
+      "type": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties",
+      "sourceType": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "awskotlin.s3.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether S3 auto-configuration is enabled.",
+      "sourceType": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.s3.endpoint",
+      "type": "java.lang.String",
+      "description": "Override the S3 endpoint URL (for example, a LocalStack endpoint). Falls back to awskotlin.endpoint.",
+      "sourceType": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties"
+    },
+    {
+      "name": "awskotlin.s3.region",
+      "type": "java.lang.String",
+      "description": "Override the S3 region. Falls back to awskotlin.region, then the SDK default region chain.",
+      "sourceType": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties"
+    },
+    {
+      "name": "awskotlin.s3.path-style-access-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Force path-style bucket addressing. Defaults to true when an endpoint override is configured, false otherwise.",
+      "sourceType": "io.github.hantsy.awskotlin.s3.autoconfigure.S3Properties"
+    }
+  ]
+}

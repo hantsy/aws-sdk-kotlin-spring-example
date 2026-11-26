@@ -1,0 +1,30 @@
+{
+  "groups": [
+    {
+      "name": "awskotlin.sns",
+      "type": "io.github.hantsy.awskotlin.sns.autoconfigure.SnsProperties",
+      "sourceType": "io.github.hantsy.awskotlin.sns.autoconfigure.SnsProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "awskotlin.sns.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether SNS auto-configuration is enabled.",
+      "sourceType": "io.github.hantsy.awskotlin.sns.autoconfigure.SnsProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.sns.endpoint",
+      "type": "java.lang.String",
+      "description": "Override the SNS endpoint URL (for example, a LocalStack endpoint). Falls back to awskotlin.endpoint.",
+      "sourceType": "io.github.hantsy.awskotlin.sns.autoconfigure.SnsProperties"
+    },
+    {
+      "name": "awskotlin.sns.region",
+      "type": "java.lang.String",
+      "description": "Override the SNS region. Falls back to awskotlin.region, then the SDK default region chain.",
+      "sourceType": "io.github.hantsy.awskotlin.sns.autoconfigure.SnsProperties"
+    }
+  ]
+}

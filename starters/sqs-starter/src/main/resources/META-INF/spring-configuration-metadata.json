@@ -1,0 +1,69 @@
+{
+  "groups": [
+    {
+      "name": "awskotlin.sqs",
+      "type": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties"
+    },
+    {
+      "name": "awskotlin.sqs.listener",
+      "type": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener"
+    }
+  ],
+  "properties": [
+    {
+      "name": "awskotlin.sqs.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether SQS auto-configuration is enabled.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.sqs.endpoint",
+      "type": "java.lang.String",
+      "description": "Override the SQS endpoint URL (for example, a LocalStack endpoint). Falls back to awskotlin.endpoint.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties"
+    },
+    {
+      "name": "awskotlin.sqs.region",
+      "type": "java.lang.String",
+      "description": "Override the SQS region. Falls back to awskotlin.region, then the SDK default region chain.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties"
+    },
+    {
+      "name": "awskotlin.sqs.listener",
+      "type": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "description": "Listener container settings.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties"
+    },
+    {
+      "name": "awskotlin.sqs.listener.auto-startup",
+      "type": "java.lang.Boolean",
+      "description": "Whether listener containers start automatically with the application context.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.sqs.listener.max-concurrent-messages",
+      "type": "java.lang.Integer",
+      "description": "Maximum number of messages processed concurrently per listener.",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "defaultValue": 10
+    },
+    {
+      "name": "awskotlin.sqs.listener.poll-time",
+      "type": "kotlin.time.Duration",
+      "description": "Long-poll wait time used when receiving messages. Accepts Kotlin duration format (10s, 500ms) or ISO-8601 (PT10S).",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "defaultValue": "10s"
+    },
+    {
+      "name": "awskotlin.sqs.listener.shutdown-timeout",
+      "type": "kotlin.time.Duration",
+      "description": "Time to wait for in-flight messages to complete on shutdown. Accepts Kotlin duration format (20s, 500ms) or ISO-8601 (PT20S).",
+      "sourceType": "io.github.hantsy.awskotlin.sqs.autoconfigure.SqsProperties$Listener",
+      "defaultValue": "20s"
+    }
+  ]
+}

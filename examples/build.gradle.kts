@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.dependencyManagement)
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.kotlinPluginSpring)
+    alias(libs.plugins.kotlinPluginSerialization)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.testLogger)
 }
@@ -26,8 +27,13 @@ dependencies {
     // kotlin support
     implementation(libs.bundles.kotlinSupport)
 
-    // aws sdk kotlin
-    implementation(libs.bundles.awsSdkKotlin)
+    // awskotlin spring boot starters (S3, Secrets Manager, SQS)
+    implementation(project(":starters:s3-starter"))
+    implementation(project(":starters:secrets-manager-starter"))
+    implementation(project(":starters:sqs-starter"))
+
+    // kotlinx converter runtime and @Serializable example payloads
+    implementation(libs.kotlinxSerializationJson)
 
     // okhttp
     implementation(libs.bundles.okhttp)

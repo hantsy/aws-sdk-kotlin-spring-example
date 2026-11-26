@@ -2,19 +2,24 @@ package com.example.demo.internal
 
 import aws.sdk.kotlin.services.secretsmanager.SecretsManagerClient
 import aws.sdk.kotlin.services.secretsmanager.model.CreateSecretRequest
-import aws.sdk.kotlin.services.secretsmanager.model.GetSecretValueRequest
 import com.example.demo.SecretsManagementService
 import com.example.demo.SecretsManagementServiceException
+import io.github.hantsy.awskotlin.secretsmanager.SecretsManagerTemplate
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class AwsSecretsManagementService(private val client: SecretsManagerClient) : SecretsManagementService {
+class AwsSecretsManagementService(
+    private val template: SecretsManagerTemplate,
+    private val client: SecretsManagerClient,
+) : SecretsManagementService {
     companion object {
         private val log = LoggerFactory.getLogger(SecretsManagementService::class.java)
     }
 
     override suspend fun write(secretName: String, secretValue: String, secretDescription: String?): String? {
+        // The template does not expose description/forceOverwriteReplicaSecret,
+        // so keep the raw starter-provided client request for writes.
         val request = CreateSecretRequest {
             name = secretName
             description = secretDescription
@@ -33,17 +38,12 @@ class AwsSecretsManagementService(private val client: SecretsManagerClient) : Se
     }
 
     override suspend fun read(secretName: String): String? {
-        val valueRequest = GetSecretValueRequest {
-            secretId = secretName
-        }
-
         log.debug("read secrets by name: $secretName")
-        val response = try {
-            client.getSecretValue(valueRequest)
+        return try {
+            template.secret(secretName).get().secretString
         } catch (e: Exception) {
             log.error("error occurred when reading secrets: ${e.message}")
             throw SecretsManagementServiceException(e.message ?: "Failed to read secrets")
         }
-        return response.secretString
     }
 }

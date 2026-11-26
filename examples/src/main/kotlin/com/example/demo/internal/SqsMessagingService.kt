@@ -4,36 +4,38 @@ import aws.sdk.kotlin.services.sqs.SqsClient
 import aws.sdk.kotlin.services.sqs.model.CreateQueueRequest
 import aws.sdk.kotlin.services.sqs.model.GetQueueUrlRequest
 import aws.sdk.kotlin.services.sqs.model.ReceiveMessageRequest
-import aws.sdk.kotlin.services.sqs.model.SendMessageRequest
 import com.example.demo.MessagingService
 import com.example.demo.MessagingServiceException
+import io.github.hantsy.awskotlin.sqs.SqsMessageConverter
+import io.github.hantsy.awskotlin.sqs.SqsTemplate
 import jakarta.annotation.PostConstruct
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import tools.jackson.databind.ObjectMapper
+import kotlin.time.Duration.Companion.seconds
 
 @Service
 class SqsMessagingService(
-    private val properties: AwsProperties,
+    private val template: SqsTemplate,
     private val sqsClient: SqsClient,
-    private val objectMapper: ObjectMapper,
+    private val converter: SqsMessageConverter,
 ) : MessagingService {
     companion object {
         private val log = LoggerFactory.getLogger(SqsMessagingService::class.java)
+        const val DEFAULT_SQS_QUEUE_NAME = "default"
         const val MAX_NUMBER_OF_RECEIVED_MESSAGES = 5
-        const val DELAY_IN_SECONDS = 1
     }
 
     @PostConstruct
     fun init() = runBlocking {
         log.debug("initializing SqsMessagingService...")
-        val queueNameVal = createQueue(properties.sqs?.queueName ?: DEFAULT_SQS_QUEUE_NAME)
+        val queueNameVal = createQueue(DEFAULT_SQS_QUEUE_NAME)
         log.debug("created queue: $queueNameVal")
     }
 
+    // The template has no queue creation, so keep the raw starter-provided client here.
     override suspend fun createQueue(queueNameVal: String): String {
         return getQueue(queueNameVal) ?: run {
             log.debug("queue $queueNameVal does not exist, create one")
@@ -74,26 +76,17 @@ class SqsMessagingService(
     }
 
     override suspend fun send(queueNameVal: String, message: Any) {
-        val getQueueUrl = getQueue(queueNameVal)
-
-        val sendMessageRequest =
-            SendMessageRequest {
-                queueUrl = getQueueUrl
-                delaySeconds = DELAY_IN_SECONDS
-                messageBody = objectMapper.writeValueAsString(message)
-            }
-
         val sendMessageResponse =
-            withContext(Dispatchers.IO) {
-                try {
-                    sqsClient.sendMessage(sendMessageRequest)
-                } catch (e: Exception) {
-                    throw MessagingServiceException(e.message ?: "Failed to send message")
-                }
+            try {
+                template.destination(queueNameVal).send(message, delay = 1.seconds)
+            } catch (e: Exception) {
+                throw MessagingServiceException(e.message ?: "Failed to send message")
             }
         log.debug("message ${sendMessageResponse.messageId} is sent out")
     }
 
+    // The template has no batch receive, so keep the raw client request and convert
+    // each body with the starter-provided converter. Messages are not deleted here.
     override suspend fun <T : Any> receive(queueNameVal: String, clazz: Class<out T>): List<T> {
         val getQueueUrl = getQueue(queueNameVal)
 
@@ -115,7 +108,7 @@ class SqsMessagingService(
             .messages
             ?.mapNotNull { message ->
                 log.debug("received message: $message")
-                runCatching { objectMapper.readValue(message.body, clazz) }.getOrNull()
+                runCatching { converter.fromBody(message.body ?: "", clazz) }.getOrNull()
             } ?: emptyList()
     }
 }

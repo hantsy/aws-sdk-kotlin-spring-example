@@ -13,17 +13,18 @@
 | Kotest assertions | 6.2.7 |
 | AWS SDK for Kotlin | 1.9.45 |
 | OkHttp | 5.5.1 |
-| Jackson | 3.x (via `tools.jackson.module:jackson-module-kotlin`) |
+| Jackson | 3.x (examples, via `tools.jackson.module:jackson-module-kotlin`) |
+| kotlinx-serialization | 1.9.0 (port modules) |
 | Testcontainers | 2.0.5 |
 
 ## Modules
 
-* `list` – a small plain Kotlin library (LinkedList) with JUnit 6 style tests.
-* `utilities` – plain Kotlin string helpers.
+* `core`, `s3`, `secrets-manager`, `sns`, `sqs` – AWS SDK for Kotlin support libraries
+  (artifacts `awskotlin-core`, `awskotlin-s3`, ...). JSON conversion uses kotlinx-serialization.
+* `starters/<service>-starter` – Spring Boot auto-configuration starters
+  (artifacts `awskotlin-<service>-spring-boot-starter`).
 * `examples` – the Spring Boot 4 application: S3, SQS and Secrets Manager services
-  built on the AWS SDK for Kotlin, plus the integration tests.
-
-Shared build conventions live in the `aws-build-tool` included build.
+  built on the AWS SDK for Kotlin, plus the integration tests. Keeps Jackson for WebFlux HTTP.
 
 ## Testing
 

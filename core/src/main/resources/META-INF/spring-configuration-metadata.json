@@ -1,0 +1,48 @@
+{
+  "groups": [
+    {
+      "name": "awskotlin",
+      "type": "io.github.hantsy.awskotlin.core.AwsKotlinProperties",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "awskotlin.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether AWS SDK for Kotlin auto-configuration is enabled.",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "awskotlin.region",
+      "type": "java.lang.String",
+      "description": "Override the AWS region. When unset, the SDK default region chain is used.",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    },
+    {
+      "name": "awskotlin.endpoint",
+      "type": "java.lang.String",
+      "description": "Override the AWS service endpoint URL (for example, a LocalStack endpoint).",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    },
+    {
+      "name": "awskotlin.access-key-id",
+      "type": "java.lang.String",
+      "description": "Static AWS access key ID. Must be configured together with awskotlin.secret-access-key.",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    },
+    {
+      "name": "awskotlin.secret-access-key",
+      "type": "java.lang.String",
+      "description": "Static AWS secret access key. Must be configured together with awskotlin.access-key-id.",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    },
+    {
+      "name": "awskotlin.profile-name",
+      "type": "java.lang.String",
+      "description": "AWS shared config profile name used to resolve credentials.",
+      "sourceType": "io.github.hantsy.awskotlin.core.AwsKotlinProperties"
+    }
+  ]
+}
