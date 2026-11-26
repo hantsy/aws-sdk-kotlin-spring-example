@@ -1,0 +1,71 @@
+version: 2
+
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      spring:
+        patterns:
+          - "org.springframework*:*"
+          - "io.projectreactor*:*"
+          - "tools.jackson*:*"
+      aws:
+        patterns:
+          - "aws.sdk.kotlin*:*"
+          - "aws.smithy.kotlin*:*"
+          - "com.squareup.okhttp3*:*"
+      kotlin:
+        patterns:
+          - "org.jetbrains.kotlin*:*"
+          - "org.jetbrains.kotlinx*:*"
+      testing:
+        patterns:
+          - "io.kotest*:*"
+          - "io.mockk*:*"
+          - "com.ninja-squad*:*"
+          - "org.testcontainers*:*"
+          - "org.junit*:*"
+          - "org.awaitility*:*"
+      build-tools:
+        patterns:
+          - "io.spring.dependency-management*:*"
+          - "org.jmailen*:*"
+          - "com.adarshr*:*"
+          - "org.gradle.toolchains*:*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(docker)"
+    groups:
+      docker:
+        patterns:
+          - "*"
