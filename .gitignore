@@ -38,3 +38,7 @@ out/
 
 # Ignore Gradle build output directory
 build
+
+### Local agent scratch ###
+.superpowers/
+.kotlin/
