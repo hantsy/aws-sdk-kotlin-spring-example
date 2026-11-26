@@ -34,9 +34,8 @@ dependencies {
 kotlin { jvmToolchain(libs.versions.java.get().toInt()) }
 
 // ktlint 1.8.0 (applied by kotlinter) requires kotlin-compiler-embeddable 2.2.x.
-// A resolution rule in this build aligns Kotlin artifacts to Gradle's embedded 2.4.21,
-// which breaks ktlint ("Extensions storage is not registered"). Pin the compiler
-// artifacts for the lint classpath only; compilation itself still uses Kotlin 2.4.10.
+// Pin the compiler artifacts for the lint classpath only; compilation itself uses
+// the Kotlin version from the version catalog.
 configurations.named("ktlint") {
     resolutionStrategy.eachDependency {
         if (requested.group == "org.jetbrains.kotlin" &&
