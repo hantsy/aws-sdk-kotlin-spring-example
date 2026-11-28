@@ -1,4 +1,14 @@
 # AWS SDK for Kotlin and Spring Examples
+
+> [!NOTE]
+> **This repository is archived.** Active development has moved to the
+> [aws-sdk-kotlin-spring](https://github.com/aws-sdk-kotlin-spring) organization:
+> [awskotlin](https://github.com/aws-sdk-kotlin-spring/awskotlin) provides the Spring Boot
+> starters for the AWS SDK for Kotlin,
+> [examples](https://github.com/aws-sdk-kotlin-spring/examples) collects the sample
+> applications, and the [documentation site](https://aws-sdk-kotlin-spring.github.io/)
+> covers guides and API reference.
+
 [AWS SDK for Kotlin](https://github.com/awslabs/aws-sdk-kotlin) is not an extension of the existing [AWS SDK for Java](https://github.com/aws/aws-sdk-java), it is rewritten in Kotlin from scratch, and ready for Kotlin Multiple Platform.
 
 ## Stack
